@@ -1,14 +1,22 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
 <h1>Главная страница</h1>
-
-<!-- <a href="/about">О моём сайте</a> -->
 <button><a href="/about">О моём сайте</a></button>
 
-{% for product, price in products.items() %}
-    <ul>{{ product }}: ${{ price }}</ul>
-{% endfor %}
+<div class="content">
+    <table>
+        <tr>
+            <th>Телефон</th>
+            <th>Цена</th>
+        </tr>
+        {% for product, price in products.items() %}
+        <tr>
+            <td>{{ product }}</td>
+            <td>${{ price }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 
 {% endblock content %}
