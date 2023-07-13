@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 app = Flask(__name__)
@@ -15,12 +15,25 @@ class Todo(db.Model):
 with app.app_context():
     db.create_all()
 
+
 @app.route('/', methods=["POST", "GET"])
 def homepage():
     tasks = Todo.query.all()
     if request.method == "POST":
-        pass
+        task_text = request.form['text']
+        new_task = Todo(text=task_text)
+        db.session.add(new_task)
+        db.session.commit()
+        return redirect('/')
     return render_template('homepage.html', tasks=tasks)
+
+
+@app.route('/delete/<int:id>')
+def delete(id):
+    task_to_delete = Todo.query.get_or_404(id)
+    db.session.delete(task_to_delete)
+    db.session.commit()
+    return redirect('/')
 
 
 @app.route('/about')
