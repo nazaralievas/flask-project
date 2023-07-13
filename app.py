@@ -1,7 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 app = Flask(__name__)
+
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db = SQLAlchemy(app)
@@ -14,9 +15,13 @@ class Todo(db.Model):
 with app.app_context():
     db.create_all()
 
-@app.route('/')
+@app.route('/', methods=["POST", "GET"])
 def homepage():
-    return render_template('homepage.html')
+    tasks = Todo.query.all()
+    if request.method == "POST":
+        pass
+    return render_template('homepage.html', tasks=tasks)
+
 
 @app.route('/about')
 def about():
