@@ -1,29 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Главная страница</h1>
-<button><a href="/about">О моём сайте</a></button>
-
 <div class="content">
     <table>
         <tr>
             <th>Задача</th>
+            <th>Изображение</th>
             <th>Добавлено</th>
             <th>Действия</th>
         </tr>
         {% for task in tasks %}
         <tr>
             <td>{{ task.text }}</td>
+            <td><img src="{{ task.image }}"></td>
             <td>{{ task.date_created.date() }}</td>
             <td>
-                <a href="">Изменить</a>
+                <a href="/update/{{task.id}}">Изменить</a>
                 <a href="/delete/{{task.id}}">Удалить</a>
             </td>
         </tr>
         {% endfor %}
     </table>
+
+    <!-- форма для добавления заметки и ссылки на изображение -->
     <form action="/" method="POST">
-        <input type="text" name="text" id="content">
+        <input type="text" name="text" id="content" placeholder="Введите текст...">
+        <input type="text" name="image" placeholder="Ссылка на картинку...">
         <input type="submit" value="Добавить">
     </form>
 </div>
